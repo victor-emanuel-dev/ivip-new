@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Site iVip 'iVip <onboarding@resend.dev>'",
+        from: "Site iVip <onboarding@resend.dev>",
         to: ["v.emanuel.pacheco@gmail.com"],
         subject: "Novo contato do site iVip",
         html: `
