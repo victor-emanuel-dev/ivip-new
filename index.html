@@ -87,6 +87,14 @@
     <meta name="theme-color" content="#ffffff" />
 
     <title>iVip - Soluções Empresariais Inovadoras</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+      (function () {
+        emailjs.init("uAZPVll13IGU56swr");
+      })();
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -580,32 +588,24 @@
           setStatus({ type: "", message: "" });
 
           try {
-            const response = await fetch("contact.php", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(formData),
+            await emailjs.send("service_qe277bc", "template_y2ljb3m", {
+              from_name: formData.name,
+              reply_to: formData.email,
+              message: formData.message,
             });
 
-            const data = await response.json();
+            setStatus({
+              type: "success",
+              message:
+                "Mensagem enviada com sucesso! Entraremos em contato em breve.",
+            });
 
-            if (data.success) {
-              setStatus({
-                type: "success",
-                message: data.message,
-              });
-              setFormData({ name: "", email: "", message: "" });
-            } else {
-              setStatus({
-                type: "error",
-                message: data.message,
-              });
-            }
+            setFormData({ name: "", email: "", message: "" });
           } catch (error) {
+            console.error("EmailJS error:", error);
             setStatus({
               type: "error",
-              message: "Erro ao enviar mensagem. Por favor, tente novamente.",
+              message: "Erro ao enviar mensagem. Tente novamente.",
             });
           }
 
